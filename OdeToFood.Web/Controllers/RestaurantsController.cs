@@ -27,6 +27,8 @@ namespace OdeToFood.Web.Controllers
         public ActionResult Details(int id)
         {
             var model = restaurantData.FirstOrDefault(id);
+            if (model == null)
+                return View("NotFound");
             return View(model);
         }
     }
