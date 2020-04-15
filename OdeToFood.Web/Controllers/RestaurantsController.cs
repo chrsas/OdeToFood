@@ -42,6 +42,8 @@ namespace OdeToFood.Web.Controllers
         [HttpPost]
         public ActionResult Create(Restaurant restaurant)
         {
+            if (!ModelState.IsValid)
+                return View();
             restaurantData.Add(restaurant);
             return RedirectToAction(nameof(Details), new { id = restaurant.Id });
         }
