@@ -22,5 +22,12 @@ namespace OdeToFood.Web.Controllers
             var model = restaurantData.GetAll();
             return View(model);
         }
+
+        [HttpGet()]
+        public ActionResult Details(int id)
+        {
+            var model = restaurantData.FirstOrDefault(id);
+            return View(model);
+        }
     }
 }
