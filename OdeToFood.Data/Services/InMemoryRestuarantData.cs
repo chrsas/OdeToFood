@@ -25,7 +25,7 @@ namespace OdeToFood.Data.Services
             restaurant.Id = _restaurants.Max(r => r.Id) + 1;
         }
 
-        public Restaurant FirstOrDefault(int id)
+        public Restaurant Get(int id)
         {
             return _restaurants.FirstOrDefault(r => r.Id == id);
         }
@@ -33,6 +33,15 @@ namespace OdeToFood.Data.Services
         public IEnumerable<Restaurant> GetAll()
         {
             return _restaurants.OrderBy(r => r.Name);
+        }
+
+        public void Update(Restaurant restaurant)
+        {
+            var dbEntity = _restaurants.FirstOrDefault(r => r.Id == restaurant.Id);
+            if(dbEntity == null)
+                throw new Exception("对象不存在");
+            dbEntity.Name = restaurant.Name;
+            dbEntity.Cuisine = restaurant.Cuisine;
         }
     }
 }

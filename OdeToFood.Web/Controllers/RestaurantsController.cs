@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 
 namespace OdeToFood.Web.Controllers
@@ -27,7 +28,7 @@ namespace OdeToFood.Web.Controllers
         [HttpGet()]
         public ActionResult Details(int id)
         {
-            var model = restaurantData.FirstOrDefault(id);
+            var model = restaurantData.Get(id);
             if (model == null)
                 return View("NotFound");
             return View(model);
@@ -43,8 +44,27 @@ namespace OdeToFood.Web.Controllers
         public ActionResult Create(Restaurant restaurant)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View(restaurant);
             restaurantData.Add(restaurant);
+            return RedirectToAction(nameof(Details), new { id = restaurant.Id });
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var model = restaurantData.Get(id);
+            if(model == null)
+                return HttpNotFound();
+            return View(model);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Edit(Restaurant restaurant)
+        {
+            if (!ModelState.IsValid)
+                return View(restaurant);
+            restaurantData.Update(restaurant);
             return RedirectToAction(nameof(Details), new { id = restaurant.Id });
         }
     }
