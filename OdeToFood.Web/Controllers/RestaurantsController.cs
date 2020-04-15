@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OdeToFood.Data.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,18 @@ namespace OdeToFood.Web.Controllers
 {
     public class RestaurantsController : Controller
     {
+        private readonly IRestaurantData restaurantData;
+
+        public RestaurantsController(IRestaurantData restaurantData)
+        {
+            this.restaurantData = restaurantData;
+        }
+
         // GET: Restaurants
         public ActionResult Index()
         {
-            return View();
+            var model = restaurantData.GetAll();
+            return View(model);
         }
     }
 }
